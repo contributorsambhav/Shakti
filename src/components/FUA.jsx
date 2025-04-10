@@ -107,14 +107,14 @@ const FileUploadAndAnalyze = () => {
       <h2 className="text-2xl font-bold mb-4">Upload Files & Run Model</h2>
       <form onSubmit={handleUpload} className="space-y-4">
         <div>
-          <label className="block mb-1 font-medium">File 1:</label>
+          <label className="block mb-1 font-medium">Upload X CSV file</label>
           <input
             type="file"
             onChange={(e) => setFile1(e.target.files[0])}
           />
         </div>
         <div>
-          <label className="block mb-1 font-medium">File 2:</label>
+          <label className="block mb-1 font-medium">Upload edge_index CSV file</label>
           <input
             type="file"
             onChange={(e) => setFile2(e.target.files[0])}
