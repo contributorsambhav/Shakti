@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import FileUploadAndAnalyze from './components/FUA'
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-   <div>
-    <FileUploadAndAnalyze />
+   <div className='min-h-screen flex flex-col gap-10'>
+    <div className='max-w-4xl mx-auto h-[30dvh] flex flex-col justify-center items-center'>
+      <h3 className='text-5xl font-bold text-center'>
+        Optimal Power Flow Analysis
+      </h3>
+      <h3 className='text-2xl font-light italic text-center'>
+        Using Graphical Neural Network
+      </h3>
+    </div>
+    <div className='p-5'>
+      <FileUploadAndAnalyze />
+    </div>
    </div>
   )
 }

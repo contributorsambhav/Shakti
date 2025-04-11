@@ -4,6 +4,8 @@ import {
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
+import { Label } from "./ui/label";
+import { Loader } from "lucide-react";
 
 // A simple CSV parser that assumes comma-separated values with a header row.
 function parseCSV(csvText) {
@@ -33,6 +35,7 @@ function parseCSV(csvText) {
 const FileUploadAndAnalyze = () => {
   const [file1, setFile1] = useState(null);
   const [file2, setFile2] = useState(null);
+  const [isLoading , setIsLoading] = useState(false); 
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const [tableData, setTableData] = useState([]);
@@ -41,6 +44,7 @@ const FileUploadAndAnalyze = () => {
   // Upload files to /upload
   const handleUpload = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     setMessage("Uploading files...");
 
     if (!file1 || !file2) {
@@ -69,6 +73,8 @@ const FileUploadAndAnalyze = () => {
     } catch (error) {
       console.error(error);
       setMessage("Error uploading files.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,43 +109,68 @@ const FileUploadAndAnalyze = () => {
   });
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Upload Files & Run Model</h2>
+    <div className="p-6 text-white ">
+      <h2 className="text-2xl font-bold mb-4 text-center">Upload Files & Run Model</h2>
       <form onSubmit={handleUpload} className="space-y-4">
-        <div>
-          <label className="block mb-1 font-medium">Upload X CSV file</label>
-          <input
-            type="file"
-            onChange={(e) => setFile1(e.target.files[0])}
-          />
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="rounded-lg p-5">
+            <Label className="h-44 w-full bg-neutral-700 flex justify-center rounded-lg cursor-pointer items-center border border-dashed " htmlFor="file1">
+              {
+                file1 ? file1.name : (
+                  <div className="underline underline-offset-1 font-light" >Upload X CSV file</div>   
+                )
+              }
+            </Label>
+            <input
+              id="file1"
+              className="hidden"
+              type="file"
+              required
+              onChange={(e) => setFile1(e.target.files[0])}
+            />
+          </div>
+          <div className="rounded-lg p-5">
+            <Label className="h-44 w-full bg-neutral-700 flex justify-center rounded-lg cursor-pointer items-center border border-dashed " htmlFor="file2">
+              {
+                file2 ? file2.name : (
+                  <div className="underline underline-offset-1 font-light" >Upload your edgeIndex CSV file</div>   
+                )
+              }
+            </Label>
+            <input
+              id="file2"
+              type="file"
+              onChange={(e) => setFile2(e.target.files[0])}
+              className="hidden"
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label className="block mb-1 font-medium">Upload edge_index CSV file</label>
-          <input
-            type="file"
-            onChange={(e) => setFile2(e.target.files[0])}
-          />
+        <div className="w-full flex justify-center">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="bg-gradient-to-b flex justify-center items-center from-blue-600 to-blue-700/80 w-full cursor-pointer max-w-sm text-white px-4 py-2 rounded-md hover:opacity-95 duration-200 transition-all"
+          >
+            {
+              isLoading ? <Loader className="animate-spin w-4 h-4"/> : "Upload Files"
+            }
+          </button>
         </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Upload Files
-        </button>
       </form>
 
       {uploadSuccess && (
         <div className="mt-4">
           <button
             onClick={handleRunModel}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="bg-green-600 flex justify-center text-white px-4 py-2 rounded hover:bg-green-700"
           >
             Run Model
           </button>
         </div>
       )}
 
-      {message && <p className="mt-4 text-gray-700">{message}</p>}
+      {message && <p className="mt-4 text-neutral-100">{message}</p>}
 
       {tableData.length > 0 && tableColumns.length > 0 && (
         <div className="mt-8">
