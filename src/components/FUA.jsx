@@ -109,7 +109,7 @@ const FileUploadAndAnalyze = () => {
   });
 
   return (
-    <div className="p-6 text-white ">
+    <div className="p-6 text-white bg-neutral-800">
       <h2 className="text-2xl font-bold mb-4 text-center">Upload Files & Run Model</h2>
       <form onSubmit={handleUpload} className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
